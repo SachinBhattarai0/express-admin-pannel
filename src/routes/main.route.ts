@@ -13,7 +13,6 @@ const ormHelpers: { [key in Orm]: OrmHelper } = {
 apiRouter.get("/model-infos/", (req: Request, res: Response) => {
   const ormHelper = ormHelpers[appOrm];
   const modelInfos = ormHelper.extractModelInfo();
-  console.log({ ...dbInstance.models.Movie.getAttributes() });
   return res.send(modelInfos);
 });
 
