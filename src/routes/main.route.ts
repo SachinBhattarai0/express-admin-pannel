@@ -1,0 +1,20 @@
+import { Router, Request, Response } from "express";
+import { SequelizeHelper } from "../orm/SequelizeHelper";
+import { Orm, OrmHelper } from "../types/main";
+
+const apiRouter = Router();
+
+/* should contain helpers for all supported orms */
+const ormHelpers: { [key in Orm]: OrmHelper } = {
+  sequelize: new SequelizeHelper(),
+};
+
+/* will return description of all model tables to frontend */
+apiRouter.get("/model-infos/", (req: Request, res: Response) => {
+  const ormHelper = ormHelpers[appOrm];
+  const modelInfos = ormHelper.extractModelInfo();
+  console.log({ ...dbInstance.models.Movie.getAttributes() });
+  return res.send(modelInfos);
+});
+
+export default apiRouter;
