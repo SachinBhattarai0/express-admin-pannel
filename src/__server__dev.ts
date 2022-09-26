@@ -1,9 +1,11 @@
 /* this file is for development purpose only */
 import express from "express";
 import { Sequelize, DataTypes } from "sequelize";
+import cors from "cors";
 import { AdminPannel } from "./index";
 
 const app = express();
+app.use(cors());
 
 const sequelize = new Sequelize("test_server", "iamadmin", "admin", {
   host: "localhost",

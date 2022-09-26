@@ -1,6 +1,7 @@
 import { Db, ServerApp, Orm } from "./types/main";
 import apiRoutes from "./routes/main.route";
 import adminPannelroute from "./routes/adminpannel.route";
+import cors from "cors";
 import express from "express";
 import path from "path";
 
@@ -19,6 +20,9 @@ export class AdminPannel {
     global.dbInstance = this.db;
     global.appInstance = this.app;
     global.appOrm = this.orm;
+
+    /* should be implemented by one using ligrary */
+    // this.app.use(cors())
 
     /* static files for admin pannel wil be served thouuth this derectory */
     this.app.use(express.static(path.join(__dirname, "../", "public")));
