@@ -20,7 +20,7 @@ const SideBar = ({ fetchUrl }: { fetchUrl: string }) => {
 
   return (
     <div className="flex flex-col top-0 left-0 w-72 bg-white h-screen border-r">
-      <div className="flex items-center justify-center h-14 border-b">
+      <div className="flex items-center justify-center h-[82px] border-b-2">
         <div>Express Admin Pannel</div>
       </div>
       <div className="overflow-y-auto overflow-x-hidden flex-grow">

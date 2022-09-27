@@ -1,0 +1,3 @@
+export class FromBuilder {
+  constructor() {}
+}
