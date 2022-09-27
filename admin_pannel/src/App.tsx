@@ -6,8 +6,9 @@ import Body from "./components/Body";
 function App() {
   const fetchUrl =
     window.location.protocol === "http:"
-      ? "http://localhost:8000/admin/backend/model-infos/"
-      : window.location.href + "/backend/model-infos/";
+      ? "http://localhost:8000/admin/backend"
+      : window.location.href + "/backend";
+
   console.log(fetchUrl);
 
   return (
@@ -16,7 +17,10 @@ function App() {
 
       <Routes>
         <Route path="/" element={<Dashboard />} />
-        <Route path="/model/:modelName" element={<Body />} />
+        <Route
+          path="/model/:modelName"
+          element={<Body fetchUrl={fetchUrl} />}
+        />
       </Routes>
     </div>
   );

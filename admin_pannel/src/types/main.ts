@@ -24,7 +24,6 @@ export interface ModelInfo {
 export type PrimitiveFieldTypes = {
   [key in FieldTypes]: (
     name: string,
-    index: number,
     defaultValue?: string
   ) => React.ReactElement;
 };

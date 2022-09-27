@@ -13,7 +13,7 @@ const SideBar = ({ fetchUrl }: { fetchUrl: string }) => {
   };
 
   useEffect(() => {
-    fetch(fetchUrl)
+    fetch(`${fetchUrl}/model-infos/`)
       .then((data) => data.json())
       .then((data) => setTableInfos(data));
   }, []);

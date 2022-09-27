@@ -16,4 +16,14 @@ apiRouter.get("/model-infos/", (req: Request, res: Response) => {
   return res.send(modelInfos);
 });
 
+/* will return values that can be used as values for relation in model */
+apiRouter.post(
+  "/model-options/:modelName/",
+  async (req: Request, res: Response) => {
+    const ormHelper = ormHelpers[appOrm];
+    const allOptions = await ormHelper.getAll(req.params.modelName);
+    return res.send(allOptions);
+  }
+);
+
 export default apiRouter;

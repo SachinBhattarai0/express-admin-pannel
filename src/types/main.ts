@@ -31,4 +31,8 @@ export interface ModelInfo {
 */
 export interface OrmHelper {
   extractModelInfo: () => ModelInfos[];
+  /* should return all datas in the given model */
+  getAll: (modelName: string) => Promise<{
+    [key: string]: any;
+  }>;
 }

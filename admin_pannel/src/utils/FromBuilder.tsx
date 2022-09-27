@@ -5,26 +5,21 @@ import Input from "../components/Form/Input";
 import Textarea from "../components/Form/Textarea";
 
 const primitiveFieldTypes: PrimitiveFieldTypes = {
-  string: (name, index, defaultValue) => (
-    <Input name={name} key={index} defaultValue={defaultValue} />
+  string: (name, defaultValue) => (
+    <Input name={name} defaultValue={defaultValue} />
   ),
-  number: (name, index, defaultValue) => (
-    <Input type="number" name={name} key={index} defaultValue={defaultValue} />
+  number: (name, defaultValue) => (
+    <Input type="number" name={name} defaultValue={defaultValue} />
   ),
-  date: (name, index, defaultValue) => (
-    <Input type="date" name={name} key={index} defaultValue={defaultValue} />
+  date: (name, defaultValue) => (
+    <Input type="date" name={name} defaultValue={defaultValue} />
   ),
-  text: (name, index, defaultValue) => (
-    <Textarea name={name} key={index} defaultValue={defaultValue} />
+  text: (name, defaultValue) => (
+    <Textarea name={name} defaultValue={defaultValue} />
   ),
 
-  boolean: (name, index, defaultValue) => (
-    <Input
-      type="checkbox"
-      name={name}
-      key={index}
-      defaultValue={defaultValue}
-    />
+  boolean: (name, defaultValue) => (
+    <Input type="checkbox" name={name} defaultValue={defaultValue} />
   ),
 };
 
@@ -36,30 +31,35 @@ const primitiveFieldTypes: PrimitiveFieldTypes = {
 // }
 
 export class FromBuilder {
-  constructor() {}
+  constructor(public optionsFetchUrl: string) {}
 
   generateField(fields: ModelInfo[] | undefined): React.ReactElement {
     return (
       <>
         {fields?.map((fieldInfo, index) => {
           if (fieldInfo.type && !fieldInfo.relationWith) {
-            return this.generatePrimitiveField(fieldInfo, index);
-          } else {
-            return <div></div>;
+            return (
+              <div key={index}>{this.generatePrimitiveField(fieldInfo)}</div>
+            );
+          } else if (fieldInfo.relationWith) {
+            return (
+              <div key={index}>{this.generateRelationField(fieldInfo)}</div>
+            );
           }
         })}
       </>
     );
   }
 
-  generatePrimitiveField(fieldInfo: ModelInfo, index: number) {
+  generatePrimitiveField(fieldInfo: ModelInfo): React.ReactElement | undefined {
     if (!fieldInfo.type) return;
     return primitiveFieldTypes[fieldInfo.type](
       fieldInfo.fieldName,
-      index,
       fieldInfo.defaultValue
     );
   }
 
-  generateRelationField() {}
+  generateRelationField(fieldInfo: ModelInfo): React.ReactElement | undefined {
+    return <div></div>;
+  }
 }
