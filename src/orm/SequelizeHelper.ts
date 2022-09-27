@@ -32,7 +32,7 @@ export class SequelizeHelper implements OrmHelper {
           fieldName: fieldName,
           allowNull: fieldProperties.allowNull,
           defaultValue: fieldProperties.defaultValue as string,
-          refrences: fieldProperties.references,
+          relationWith: fieldProperties.references,
           //   relationType:
         };
       })

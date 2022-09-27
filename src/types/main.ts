@@ -15,9 +15,11 @@ export interface ModelInfo {
   type: "string" | "date" | "number" | "text" | "boolean" | undefined;
   fieldName: string;
   allowNull?: boolean;
-  defaultValue?: string | number | boolean;
-  refrences?: string | ModelAttributeColumnReferencesOptions | undefined;
-  relationType?:
+  defaultValue?: string;
+  relationWith?: string | ModelAttributeColumnReferencesOptions | undefined;
+
+  refrences?: { model: string; key: string }[];
+  refrenceType?:
     | "oneToOne"
     | "oneToMany" /* relationType is not the actual relations between models */;
 }
