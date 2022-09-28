@@ -1,8 +1,9 @@
 import React from "react";
 import { ModelInfo } from "../types/main";
-import { PrimitiveFieldTypes } from "../types/main";
+import { PrimitiveFieldTypes, relationModel } from "../types/main";
 import Input from "../components/Form/Input";
 import Textarea from "../components/Form/Textarea";
+import Select from "../components/Form/Select";
 
 const primitiveFieldTypes: PrimitiveFieldTypes = {
   string: (name, defaultValue) => (
@@ -22,13 +23,6 @@ const primitiveFieldTypes: PrimitiveFieldTypes = {
     <Input type="checkbox" name={name} defaultValue={defaultValue} />
   ),
 };
-
-// const relationFieldTypes = {
-//   select: (name: string, options: { name: string; value: string }[]) => (
-//     <Select name={name} options={options} />
-//   ),
-
-// }
 
 export class FromBuilder {
   constructor(public optionsFetchUrl: string) {}
@@ -60,6 +54,21 @@ export class FromBuilder {
   }
 
   generateRelationField(fieldInfo: ModelInfo): React.ReactElement | undefined {
-    return <div></div>;
+    if (!fieldInfo.relationWith?.options) return;
+    const options: relationModel[] = fieldInfo.relationWith!.options.map(
+      (item) => {
+        console.log(item);
+        const key = fieldInfo.relationWith!.key;
+        return { name: "asdf", value: item[key] };
+      }
+    );
+
+    return (
+      <Select
+        name={fieldInfo.fieldName}
+        defaultValue={fieldInfo.defaultValue}
+        options={options}
+      />
+    );
   }
 }

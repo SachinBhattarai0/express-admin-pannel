@@ -17,9 +17,10 @@ export interface ModelInfo {
   allowNull?: boolean;
   defaultValue?: string;
   relationWith?: string | ModelAttributeColumnReferencesOptions | undefined;
-
   refrences?: { model: string; key: string }[];
-  refrenceType?:
+
+  //associations
+  associationType?:
     | "oneToOne"
     | "oneToMany" /* relationType is not the actual relations between models */;
 }

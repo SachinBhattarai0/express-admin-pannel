@@ -23,6 +23,7 @@ export class SequelizeHelper implements OrmHelper {
 
   async getAll(modelName: string): Promise<{ [key: string]: any }> {
     const model = dbInstance.models[modelName];
+    if (!model) throw new Error("invalid model name");
     return model.findAll();
   }
 

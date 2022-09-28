@@ -17,7 +17,7 @@ const Select = ({ defaultValue, name, options }: inputProps) => {
       <select
         id="countries"
         defaultValue={defaultValue}
-        className="bg-gray-50 border-2 border-gray-300 rounded  focus:border-indigo-600 transition block w-full p-2.5 "
+        className="bg-gray-50 border-2 border-gray-300 rounded outline-none focus:border-indigo-600 transition block w-full p-2.5 "
       >
         <option value="">Choose a Value</option>
         {options.map((opt, i) => {

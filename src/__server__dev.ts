@@ -21,7 +21,7 @@ sequelize
 
 const Director = sequelize.define("Director", {
   name: { type: DataTypes.STRING, allowNull: true },
-  birthDate: { type: DataTypes.DATE, allowNull: false },
+  birthDate: { type: DataTypes.DATE },
   description: { type: DataTypes.TEXT },
 });
 const Movie = sequelize.define("Movie", {
@@ -87,6 +87,23 @@ Movie.belongsToMany(Actor, { through: ActorMovies });
 Actor.belongsToMany(Movie, { through: ActorMovies });
 
 // sequelize.sync({ alter: true });
+
+// async function notW() {
+//   const newactor = await Actor.create({
+//     name: "test name",
+//     successor: "noone",
+//   });
+//   const newdir = await Director.create({
+//     name: "test name of director",
+//     birthDate: "Wed Sep 28 2022 19:09:21 GMT+0545 (Nepal Time)",
+//     description: "asdf",
+//   });
+//   const movie = await Movie.create({
+//     name: "my movie",
+//     director: newdir.name,
+//   });
+// }
+// notW();
 
 const adminPannel = new AdminPannel("sequelize", sequelize, app);
 adminPannel.initialize("admin");

@@ -10,15 +10,21 @@ export type TAbleContext = {
 
 export type FieldTypes = "string" | "date" | "number" | "text" | "boolean";
 
+export type relationModel = { name: string; value: string };
+
 export interface ModelInfo {
   type: FieldTypes | undefined;
   fieldName: string;
   allowNull?: boolean;
   defaultValue?: string;
-  relationWith?: { model: string; key: string };
-  relationType?:
-    | "oneToOne"
-    | "oneToMany" /* relationType is not the actual relations between models */;
+  relationWith?: {
+    model: string;
+    key: string;
+    options: { [key: string]: any }[];
+  };
+
+  //associations
+  associationType?: "oneToOne" | "oneToMany";
 }
 
 export type PrimitiveFieldTypes = {
