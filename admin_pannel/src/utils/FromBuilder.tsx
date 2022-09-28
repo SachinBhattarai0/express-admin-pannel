@@ -1,6 +1,10 @@
 import React from "react";
 import { ModelInfo } from "../types/main";
-import { PrimitiveFieldTypes, relationModel } from "../types/main";
+import {
+  PrimitiveFieldTypes,
+  relationModel,
+  associationInfo,
+} from "../types/main";
 import Input from "../components/Form/Input";
 import Textarea from "../components/Form/Textarea";
 import Select from "../components/Form/Select";
@@ -40,6 +44,22 @@ export class FromBuilder {
               <div key={index}>{this.generateRelationField(fieldInfo)}</div>
             );
           }
+        })}
+      </>
+    );
+  }
+
+  generateAssociationField(
+    associations: associationInfo[] | undefined
+  ): React.ReactElement {
+    return (
+      <>
+        {associations?.map((associationInfo, i) => {
+          return (
+            <div key={i}>
+              {associationInfo.model},{associationInfo.associationType}
+            </div>
+          );
         })}
       </>
     );

@@ -1,12 +1,15 @@
+export type associationInfo = {
+  model: string;
+  associationType: "oneToOne" | "oneToMany";
+  options?: { [key: string]: any }[];
+};
+
 export type TableInfo = {
   tableName: string;
   fields: ModelInfo[];
 
   /* associations means to which other models refrences this model */
-  associations?: {
-    model: string;
-    associationType: "oneToOne" | "oneToMany";
-  };
+  associations?: associationInfo[];
 };
 
 export type TAbleContext = {

@@ -65,7 +65,7 @@ export class SequelizeHelper implements OrmHelper {
       .filter((i): i is ModelInfo => i !== undefined);
   }
 
-  getType(typeInstance: DataType) {
+  private getType(typeInstance: DataType) {
     if (typeInstance instanceof DataTypes.BOOLEAN) return "boolean";
     if (typeInstance instanceof DataTypes.TEXT) return "text";
     if (typeInstance instanceof DataTypes.INTEGER) return "number";
@@ -73,7 +73,7 @@ export class SequelizeHelper implements OrmHelper {
     if (typeInstance instanceof DataTypes.STRING) return "string";
   }
 
-  getAssociationType(associationName: string) {
+  private getAssociationType(associationName: string) {
     if (associationName === "HasOne") return "oneToOne";
     if (associationName === "HasMany") return "oneToMany";
   }
