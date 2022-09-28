@@ -115,6 +115,8 @@ Actor.belongsTo(ActorProfle); /* in model ActorProfileId */
 Movie.belongsToMany(Actor, { through: ActorMovies });
 Actor.belongsToMany(Movie, { through: ActorMovies });
 
+// console.log({ ...ActorProfle.associations.Actor });
+
 // sequelize.sync({ alter: true });
 
 // async function notW() {

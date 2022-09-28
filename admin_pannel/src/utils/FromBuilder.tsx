@@ -57,7 +57,6 @@ export class FromBuilder {
     if (!fieldInfo.relationWith?.options) return;
     const options: relationModel[] = fieldInfo.relationWith!.options.map(
       (item) => {
-        console.log(item);
         const key = fieldInfo.relationWith!.key;
         return { name: item["__title__"] || item[key], value: item[key] };
       }
