@@ -59,7 +59,7 @@ export class FromBuilder {
       (item) => {
         console.log(item);
         const key = fieldInfo.relationWith!.key;
-        return { name: "asdf", value: item[key] };
+        return { name: item["__title__"] || item[key], value: item[key] };
       }
     );
 

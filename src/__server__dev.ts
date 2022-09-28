@@ -19,10 +19,18 @@ sequelize
     console.error("Unable to connect to the database:", error);
   });
 
+/* virtual field __title__ should be added for better readibility in admin pannel  */
 const Director = sequelize.define("Director", {
   name: { type: DataTypes.STRING, allowNull: true },
   birthDate: { type: DataTypes.DATE },
   description: { type: DataTypes.TEXT },
+
+  __title__: {
+    type: DataTypes.VIRTUAL,
+    get() {
+      return `${this.getDataValue("name")}`;
+    },
+  },
 });
 const Movie = sequelize.define("Movie", {
   id: {
@@ -42,6 +50,13 @@ const Movie = sequelize.define("Movie", {
       key: "id",
     },
   },
+
+  __title__: {
+    type: DataTypes.VIRTUAL,
+    get() {
+      return `${this.getDataValue("name")}`;
+    },
+  },
 });
 const ActorProfle = sequelize.define("ActorProfile", {
   photo: DataTypes.STRING,
@@ -57,6 +72,13 @@ const Actor = sequelize.define("Actor", {
     type: DataTypes.INTEGER,
     references: { model: ActorProfle, key: "id" },
   },
+
+  __title__: {
+    type: DataTypes.VIRTUAL,
+    get() {
+      return `${this.getDataValue("name")}`;
+    },
+  },
 });
 const ActorMovies = sequelize.define("ActorMovies", {
   MovieId: {
@@ -71,6 +93,13 @@ const ActorMovies = sequelize.define("ActorMovies", {
     references: {
       model: Actor, // 'Actors' would also work
       key: "id",
+    },
+  },
+
+  __title__: {
+    type: DataTypes.VIRTUAL,
+    get() {
+      return `${this.getDataValue("MovieId")},${this.getDataValue("ActorId")}`;
     },
   },
 });
