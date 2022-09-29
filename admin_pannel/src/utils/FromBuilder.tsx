@@ -49,22 +49,6 @@ export class FromBuilder {
     );
   }
 
-  generateAssociationField(
-    associations: associationInfo[] | undefined
-  ): React.ReactElement {
-    return (
-      <>
-        {associations?.map((associationInfo, i) => {
-          return (
-            <div key={i}>
-              {associationInfo.model},{associationInfo.associationType}
-            </div>
-          );
-        })}
-      </>
-    );
-  }
-
   generatePrimitiveField(fieldInfo: ModelInfo): React.ReactElement | undefined {
     if (!fieldInfo.type) return;
     return primitiveFieldTypes[fieldInfo.type](
@@ -88,6 +72,38 @@ export class FromBuilder {
         defaultValue={fieldInfo.defaultValue}
         options={options}
       />
+    );
+  }
+
+  generateAssociationField(
+    associations: associationInfo[] | undefined
+  ): React.ReactElement {
+    return (
+      <>
+        {associations?.map((associationInfo, index) => {
+          const options = associationInfo.options?.map((item) => {
+            const key = "id";
+            return { name: item["__title__"] || item[key], value: item[key] };
+          });
+
+          const name = `${
+            associationInfo.associationType
+          }___${associationInfo.model.slice(0, -1)}`;
+
+          if (associationInfo.associationType === "oneToOne") {
+            return <Select key={index} name={name} options={options} />;
+          } else {
+            return (
+              <Select
+                key={index}
+                multiple={true}
+                name={name}
+                options={options}
+              />
+            );
+          }
+        })}
+      </>
     );
   }
 }

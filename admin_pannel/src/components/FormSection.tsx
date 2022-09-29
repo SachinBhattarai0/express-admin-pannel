@@ -43,7 +43,10 @@ const FormSection = ({ activeTable, fetchUrl }: FormSelectionProps) => {
   }, [activeTable]);
 
   return (
-    <form className="bg-white m-4 p-3 md:p-6 rounded border border-gray-300 shadow-md space-y-1">
+    <form
+      id="rest"
+      className="bg-white m-4 p-3 md:p-6 rounded border border-gray-300 shadow-md space-y-1"
+    >
       {/* form elements for those fields which are mentioned in models */}
       {formBuilder.generateField(activeTableState?.fields)}
 

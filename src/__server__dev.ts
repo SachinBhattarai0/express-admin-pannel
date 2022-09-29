@@ -19,7 +19,7 @@ sequelize
     console.error("Unable to connect to the database:", error);
   });
 
-/* virtual field __title__ should be added for better readibility in admin pannel  */
+// /* virtual field __title__ should be added for better readibility in admin pannel  */
 const Director = sequelize.define("Director", {
   name: { type: DataTypes.STRING, allowNull: true },
   birthDate: { type: DataTypes.DATE },
@@ -115,25 +115,77 @@ Actor.belongsTo(ActorProfle); /* in model ActorProfileId */
 Movie.belongsToMany(Actor, { through: ActorMovies });
 Actor.belongsToMany(Movie, { through: ActorMovies });
 
-// sequelize.sync({ alter: true });
-
 // async function notW() {
 //   const newactor = await Actor.create({
-//     name: "test name",
-//     successor: "noone",
+//     name: "Ranbir Kapoor",
 //   });
 //   const newdir = await Director.create({
-//     name: "test name of director",
+//     name: "SS.Rajamouli",
 //     birthDate: "Wed Sep 28 2022 19:09:21 GMT+0545 (Nepal Time)",
 //     description: "asdf",
 //   });
 //   const movie = await Movie.create({
-//     name: "my movie",
+//     name: "Avatar-the way of water",
 //     director: newdir.name,
 //   });
 // }
 // notW();
 
+// sequelize.sync({ alter: true });
+
+// const userProfile = sequelize.define("Profile", {
+//   photo: DataTypes.STRING,
+//   description: DataTypes.TEXT,
+// });
+// const user = sequelize.define("User", {
+//   name: DataTypes.STRING,
+//   ProfileId: {
+//     type: DataTypes.INTEGER,
+//     references: {
+//       model: userProfile,
+//       key: "id",
+//     },
+//   },
+// });
+// userProfile.hasOne(user);
+// user.belongsTo(userProfile);
+
+// const blog = sequelize.define("Blog", {
+//   title: {
+//     type: DataTypes.STRING,
+//     allowNull: false,
+//     defaultValue: "some title",
+//   },
+//   body: {
+//     type: DataTypes.TEXT,
+//   },
+//   ownerId: {
+//     type: DataTypes.INTEGER,
+//     references: { model: user, key: "id" },
+//   },
+// });
+// user.hasMany(blog);
+// blog.belongsTo(user, { as: "owner" });
+
+// const blogComments = sequelize.define("BlogComment", {
+//   BlogId: {
+//     type: DataTypes.INTEGER,
+//     references: { model: blog, key: "id" },
+//   },
+//   CommentId: {
+//     type: DataTypes.INTEGER,
+//     references: { model: user, key: "id" },
+//   },
+// });
+
+// const comment = sequelize.define("Comment", {
+//   comment: { type: DataTypes.STRING },
+// });
+
+// blog.belongsToMany(comment, { through: blogComments });
+// comment.belongsToMany(blog, { through: blogComments });
+
+//
 const adminPannel = new AdminPannel("sequelize", sequelize, app);
 adminPannel.initialize("admin");
 
