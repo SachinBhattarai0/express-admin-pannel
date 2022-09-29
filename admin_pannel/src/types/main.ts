@@ -1,15 +1,6 @@
-export type associationInfo = {
-  model: string;
-  associationType: "oneToOne" | "oneToMany";
-  options?: { [key: string]: any }[];
-};
-
 export type TableInfo = {
   tableName: string;
   fields: ModelInfo[];
-
-  /* associations means to which other models refrences this model */
-  associations?: associationInfo[];
 };
 
 export type TAbleContext = {
@@ -26,13 +17,14 @@ export interface ModelInfo {
   fieldName: string;
   allowNull?: boolean;
   defaultValue?: string;
-
-  /* relationWith means to which models this model refrence*/
   relationWith?: {
     model: string;
     key: string;
     options: { [key: string]: any }[];
   };
+
+  //associations
+  associationType?: "oneToOne" | "oneToMany";
 }
 
 export type PrimitiveFieldTypes = {

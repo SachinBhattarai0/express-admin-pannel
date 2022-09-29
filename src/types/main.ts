@@ -8,14 +8,7 @@ export type Orm = "sequelize"; /* or any other with union types */
 export interface ModelInfos {
   tableName: string;
   fields: ModelInfo[];
-  /* associations means to which other models refrences this model */
-  associations?: (associationInfo | undefined)[];
 }
-
-export type associationInfo = {
-  model: string;
-  associationType: "oneToOne" | "oneToMany" | undefined;
-};
 
 /* modelinfos which can be used by frontend to make form for the model */
 export interface ModelInfo {
@@ -23,12 +16,13 @@ export interface ModelInfo {
   fieldName: string;
   allowNull?: boolean;
   defaultValue?: string;
+  relationWith?: string | ModelAttributeColumnReferencesOptions | undefined;
+  refrences?: { model: string; key: string }[];
 
-  /* relationWith means to which models this model refrence*/
-  relationWith?:
-    | string
-    | ModelAttributeColumnReferencesOptions /* { model: string; key: string }[] */
-    | undefined;
+  //associations
+  associationType?:
+    | "oneToOne"
+    | "oneToMany" /* relationType is not the actual relations between models */;
 }
 
 /*
