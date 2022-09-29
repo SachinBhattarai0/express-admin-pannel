@@ -9,13 +9,15 @@ type inputProps = {
 };
 
 const Select = ({ defaultValue, name, options }: inputProps) => {
+  const randomId = randomString();
   return (
     <>
-      <label htmlFor="countries" className="block mb-2 dark:text-gray-400">
+      <label htmlFor={randomId} className="block mb-2 dark:text-gray-400">
         {capitalizeFirstLetter(name)}:
       </label>
       <select
-        id="countries"
+        id={randomId}
+        name={name}
         defaultValue={defaultValue}
         className="bg-gray-50 border-2 border-gray-300 rounded outline-none focus:border-indigo-600 transition block w-full p-2.5 "
       >

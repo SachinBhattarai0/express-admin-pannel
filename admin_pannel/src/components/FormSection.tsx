@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TableInfo } from "../types/main";
 import Button from "./Form/Button";
 import { FromBuilder } from "../utils/FromBuilder";
@@ -8,7 +8,6 @@ type FormSelectionProps = {
   activeTable: TableInfo | null;
   fetchUrl: string;
 };
-//some chane
 
 const FormSection = ({ activeTable, fetchUrl }: FormSelectionProps) => {
   const formBuilder = new FromBuilder(fetchUrl);
@@ -31,8 +30,19 @@ const FormSection = ({ activeTable, fetchUrl }: FormSelectionProps) => {
     setActiveTableState(activeTable);
   }, [activeTable]);
 
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.target as HTMLFormElement);
+
+    formData.forEach((k, v) => console.log(k, v));
+  };
+
   return (
-    <form className="bg-white m-4 p-3 md:p-6 rounded border border-gray-300 shadow-md space-y-1">
+    <form
+      onSubmit={handleSubmit}
+      className="bg-white m-4 p-3 md:p-6 rounded border border-gray-300 shadow-md space-y-1"
+    >
       {formBuilder.generateField(activeTableState?.fields)}
 
       <Button>Submit</Button>

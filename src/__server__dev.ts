@@ -46,7 +46,7 @@ const Movie = sequelize.define("Movie", {
   DirectorId: {
     type: DataTypes.INTEGER,
     references: {
-      model: Director, // 'Directors' would also work
+      model: "Directors", // 'Directors' would also work
       key: "id",
     },
   },
@@ -61,6 +61,12 @@ const Movie = sequelize.define("Movie", {
 const ActorProfle = sequelize.define("ActorProfile", {
   photo: DataTypes.STRING,
   description: DataTypes.TEXT,
+  __title__: {
+    type: DataTypes.VIRTUAL,
+    get() {
+      return this.getDataValue("photo");
+    },
+  },
 });
 const Actor = sequelize.define("Actor", {
   name: { type: DataTypes.STRING, allowNull: true },
@@ -72,7 +78,10 @@ const Actor = sequelize.define("Actor", {
     type: DataTypes.INTEGER,
     references: { model: ActorProfle, key: "id" },
   },
-
+  isAlive: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: true,
+  },
   __title__: {
     type: DataTypes.VIRTUAL,
     get() {
@@ -84,14 +93,14 @@ const ActorMovies = sequelize.define("ActorMovies", {
   MovieId: {
     type: DataTypes.INTEGER,
     references: {
-      model: Movie, // 'Movies' would also work
+      model: "Movies", // 'Movies' would also work
       key: "id",
     },
   },
   ActorId: {
     type: DataTypes.INTEGER,
     references: {
-      model: Actor, // 'Actors' would also work
+      model: "Actors", // 'Actors' would also work
       key: "id",
     },
   },
@@ -115,16 +124,19 @@ Actor.belongsTo(ActorProfle); /* in model ActorProfileId */
 Movie.belongsToMany(Actor, { through: ActorMovies });
 Actor.belongsToMany(Movie, { through: ActorMovies });
 
-// sequelize.sync({ alter: true });
-
 // async function notW() {
+//   await sequelize.sync({ force: true });
+//   const profile = await ActorProfle.create({
+//     photo: "some link",
+//     description: "this is description",
+//   });
 //   const newactor = await Actor.create({
 //     name: "test name",
 //     successor: "noone",
 //   });
 //   const newdir = await Director.create({
 //     name: "test name of director",
-//     birthDate: "Wed Sep 28 2022 19:09:21 GMT+0545 (Nepal Time)",
+//     birthDate: "Wed Sep 28 2022 19:09:21 GMT+0545 (Nepal Time) ",
 //     description: "asdf",
 //   });
 //   const movie = await Movie.create({
