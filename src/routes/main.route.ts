@@ -23,11 +23,32 @@ apiRouter.post(
     const ormHelper = ormHelpers[appOrm];
     try {
       const allOptions = await ormHelper.getAll(req.params.modelName);
-      return res.send(allOptions);
+      return res.json(allOptions);
     } catch (error) {
-      res.status(400).send(error);
+      if (error instanceof Error) {
+        return res.status(400).json({ error: error.message });
+      }
+      return res.status(400).json({ error: "unknown error occured" });
     }
   }
 );
+
+apiRouter.post("/create/:modelName/", async (req: Request, res: Response) => {
+  const { modelName } = req.params;
+  const ormHelper = ormHelpers[appOrm];
+  console.log(req.body);
+  try {
+    const response = await ormHelper.createOne(modelName, { ...req.body });
+    return res.json({
+      message: `${modelName} created successfully!`,
+      response,
+    });
+  } catch (error) {
+    if (error instanceof Error) {
+      return res.status(400).json({ error: error.message });
+    }
+    return res.status(400).json({ error: "unknown error occured" });
+  }
+});
 
 export default apiRouter;

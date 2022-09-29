@@ -4,6 +4,7 @@ import { PrimitiveFieldTypes, relationModel } from "../types/main";
 import Input from "../components/Form/Input";
 import Textarea from "../components/Form/Textarea";
 import Select from "../components/Form/Select";
+import Checkbox from "../components/Form/Checkbox";
 
 const primitiveFieldTypes: PrimitiveFieldTypes = {
   string: (name, defaultValue) => (
@@ -20,7 +21,7 @@ const primitiveFieldTypes: PrimitiveFieldTypes = {
   ),
 
   boolean: (name, defaultValue) => (
-    <Input type="checkbox" name={name} defaultValue={defaultValue} />
+    <Checkbox name={name} checked={defaultValue} />
   ),
 };
 
@@ -57,7 +58,6 @@ export class FromBuilder {
     if (!fieldInfo.relationWith?.options) return;
     const options: relationModel[] = fieldInfo.relationWith!.options.map(
       (item) => {
-        console.log(item);
         const key = fieldInfo.relationWith!.key;
         return { name: item["__title__"] || item[key], value: item[key] };
       }

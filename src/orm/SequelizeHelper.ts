@@ -22,9 +22,15 @@ export class SequelizeHelper implements OrmHelper {
   }
 
   async getAll(modelName: string): Promise<{ [key: string]: any }> {
-    const model = dbInstance.models[modelName];
+    const model = this.getModel(modelName);
     if (!model) throw new Error("invalid model name");
     return model.findAll();
+  }
+
+  async createOne(modelName: string, body: object) {
+    const model = this.getModel(modelName);
+    if (!model) throw new Error("invalid model name");
+    return model.create({ ...body });
   }
 
   getModelFieldInfo(model: ModelStatic<Model>): ModelInfo[] {
@@ -39,7 +45,6 @@ export class SequelizeHelper implements OrmHelper {
           allowNull: fieldProperties.allowNull,
           defaultValue: fieldProperties.defaultValue as string,
           relationWith: fieldProperties.references,
-          //   relationType:
         };
       })
       .filter((i): i is ModelInfo => i !== undefined);
@@ -51,5 +56,17 @@ export class SequelizeHelper implements OrmHelper {
     if (typeInstance instanceof DataTypes.INTEGER) return "number";
     if (typeInstance instanceof DataTypes.DATE) return "date";
     if (typeInstance instanceof DataTypes.STRING) return "string";
+  }
+
+  getModel(modelName: string) {
+    /* model name can be given as "s" in end or without an "s" in end */
+    let model = dbInstance.models[modelName];
+    if (!model) {
+      model = dbInstance.models[modelName + "s"];
+    }
+    if (!model && modelName.endsWith("s")) {
+      model = dbInstance.models[modelName.slice(0, -1)];
+    }
+    return model;
   }
 }

@@ -36,4 +36,6 @@ export interface OrmHelper {
   getAll: (modelName: string) => Promise<{
     [key: string]: any;
   }>;
+
+  createOne: (modelName: string, body: object) => Promise<any>;
 }

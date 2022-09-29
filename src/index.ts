@@ -23,6 +23,8 @@ export class AdminPannel {
 
     /* should be implemented by one using ligrary */
     // this.app.use(cors())
+    // this.app.use(express.json())
+    // app.use(express.urlencoded({ extended: true }))
 
     /* static files for admin pannel wil be served thouuth this derectory */
     this.app.use(express.static(path.join(__dirname, "../", "public")));

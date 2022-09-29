@@ -7,3 +7,24 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+.animate-custom {
+  animation: scaling 200ms ease-out;
+}
+@keyframes scaling {
+  0% {
+    scale: 1;
+  }
+  25% {
+    scale: 0.8;
+  }
+  50% {
+    scale: 0.6;
+  }
+  75% {
+    scale: 0.8;
+  }
+  100% {
+    scale: 1;
+  }
+}
