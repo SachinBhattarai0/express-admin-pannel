@@ -42,6 +42,8 @@ const FormSection = ({ activeTable, fetchUrl }: FormSelectionProps) => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!activeTableState) return;
+
     const formData = new FormData(e.target as HTMLFormElement);
     let formDataObj: { [key: string]: any } = {};
 
@@ -49,7 +51,8 @@ const FormSection = ({ activeTable, fetchUrl }: FormSelectionProps) => {
       formDataObj[key] = value;
     });
 
-    activeTableState?.fields.forEach((field) => {
+    for (let i = 0; i < activeTableState.fields.length; i++) {
+      const field = activeTableState.fields[i];
       /*
       by defautt if value of checkbox is unchecked then new FormData ignores key&value of checkbox.
       this can create problem sometimes so below configuration will check whether formData is missing any
@@ -58,9 +61,16 @@ const FormSection = ({ activeTable, fetchUrl }: FormSelectionProps) => {
       if (!formDataObj[field.fieldName] && field.type === "boolean") {
         formDataObj[field.fieldName] = false;
       } else if (!formDataObj[field.fieldName] && field.allowNull === false) {
-        updateAlert!(`${field.fieldName} cannot be empty!`);
+        return updateAlert!(`${field.fieldName} cannot be empty!`);
+      } else if (
+        field.type === "number" &&
+        field.allowNull === false &&
+        !formDataObj[field.fieldName]
+      ) {
+        /* if no value if providef for a number field and it is not required then delete the value bcoz the value will be empty string which can throw error when submitting */
+        delete formDataObj[field.fieldName];
       }
-    });
+    }
 
     const url = `${fetchUrl}/create/${activeTableState?.tableName}/`;
 
@@ -80,12 +90,12 @@ const FormSection = ({ activeTable, fetchUrl }: FormSelectionProps) => {
       onSubmit={handleSubmit}
       className="bg-white m-4 p-3 md:p-6 rounded border border-gray-300 shadow-md space-y-1"
     >
+      {formBuilder.generateField(activeTableState?.fields)}
       {isFetchPending && (
         <div className="mx-auto first:h-10 first:w-10">
           <Spinner />
         </div>
       )}
-      {formBuilder.generateField(activeTableState?.fields)}
 
       <Button isPending={isFormPending}>Submit</Button>
     </form>
