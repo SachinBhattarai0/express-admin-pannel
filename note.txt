@@ -8,3 +8,12 @@
 
 
 /* virtual field __title__ should be added in model for better readibility in admin pannel  */
+
+
+
+//define extra field options on admin pannel like this
+//const adminPannel = new AdminPannel("sequelize", sequelize, app, {
+//  titleFields: { Actor: ["id", "successor"], ActorMovies: ["ActorId"] },
+//});
+after defining custom fields if user still want to show the title then it should be added '__title__' in the list 
+

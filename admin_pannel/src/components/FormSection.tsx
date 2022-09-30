@@ -9,12 +9,11 @@ import Spinner from "../container/Spinner";
 
 type FormSelectionProps = {
   activeTable: TableInfo | null;
-  fetchUrl: string;
 };
 
-const FormSection = ({ activeTable, fetchUrl }: FormSelectionProps) => {
+const FormSection = ({ activeTable }: FormSelectionProps) => {
   const navigate = useNavigate();
-  const formBuilder = new FromBuilder(fetchUrl);
+  const formBuilder = new FromBuilder(window.fetchURL);
   const { updateAlert } = useAlertContext();
   //form submit pending
   const [isFormPending, setIsFormPending] = useState(false);
@@ -31,7 +30,9 @@ const FormSection = ({ activeTable, fetchUrl }: FormSelectionProps) => {
       if (!field.relationWith) return;
       setIsFetchPending(true);
       const modelName = field.relationWith.model;
-      const option = await postRequest(`${fetchUrl}/model-values/${modelName}`);
+      const option = await postRequest(
+        `${window.fetchURL}/model-values/${modelName}`
+      );
 
       field.relationWith.options = option;
       activeTable.fields[i] = field;
@@ -62,17 +63,13 @@ const FormSection = ({ activeTable, fetchUrl }: FormSelectionProps) => {
         formDataObj[field.fieldName] = false;
       } else if (!formDataObj[field.fieldName] && field.allowNull === false) {
         return updateAlert!(`${field.fieldName} cannot be empty!`);
-      } else if (
-        field.type === "number" &&
-        field.allowNull === false &&
-        !formDataObj[field.fieldName]
-      ) {
+      } else if (field.type === "number" && !formDataObj[field.fieldName]) {
         /* if no value if providef for a number field and it is not required then delete the value bcoz the value will be empty string which can throw error when submitting */
         delete formDataObj[field.fieldName];
       }
     }
 
-    const url = `${fetchUrl}/create/${activeTableState?.tableName}/`;
+    const url = `${window.fetchURL}/create/${activeTableState?.tableName}/`;
 
     setIsFormPending(true);
     const data = await postRequest(url, { ...formDataObj });

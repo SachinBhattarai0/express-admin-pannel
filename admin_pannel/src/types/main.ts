@@ -8,6 +8,10 @@ export type TAbleContext = {
   setActiveTable: React.Dispatch<React.SetStateAction<TableInfo | null>> | null;
 };
 
+export type AnyObj = {
+  [key: string]: any;
+};
+
 export type FieldTypes = "string" | "date" | "number" | "text" | "boolean";
 
 export type relationModel = { name: string; value: string };
@@ -33,3 +37,12 @@ export type PrimitiveFieldTypes = {
     defaultValue?: string
   ) => React.ReactElement;
 };
+
+// options that can be passed while creating instance of AdminPannel
+export interface AdminPannelOptions {
+  /* 
+  titleFields are set of fields for each model whose value will be shown in admin pannel
+  titleFields:{model1:["id","name"],model2:["field1","field2"]}
+   */
+  titleFields?: { [key: string]: string[] };
+}

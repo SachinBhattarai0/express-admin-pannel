@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useActiveTableContext } from "../context/ActiveTableContext";
 import { TableInfo } from "../types/main";
 
-const SideBar = ({ fetchUrl }: { fetchUrl: string }) => {
+const SideBar = () => {
   const { setActiveTable } = useActiveTableContext();
   const [tableInfos, setTableInfos] = useState<TableInfo[] | null>(null);
 
@@ -13,7 +13,7 @@ const SideBar = ({ fetchUrl }: { fetchUrl: string }) => {
   };
 
   useEffect(() => {
-    fetch(`${fetchUrl}/model-infos/`)
+    fetch(`${window.fetchURL}/model-infos/`)
       .then((data) => data.json())
       .then((data) => setTableInfos(data));
   }, []);

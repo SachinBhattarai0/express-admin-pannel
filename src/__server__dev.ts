@@ -148,7 +148,12 @@ Actor.belongsToMany(Movie, { through: ActorMovies });
 // }
 // notW();
 
-const adminPannel = new AdminPannel("sequelize", sequelize, app);
+//arguments: name of orm,instance of db,express app,options
+const adminPannel = new AdminPannel("sequelize", sequelize, app, {
+  titleFields: {
+    Actor: ["id", "successor"],
+  },
+});
 adminPannel.initialize("admin");
 
 app.listen(8000, () => console.log("client listening at port 8000"));

@@ -1,7 +1,7 @@
 import { randomString, capitalizeFirstLetter } from "../../utils/StringUtils";
 
 type inputProps = {
-  name: string;
+  name?: string;
   checked?: boolean | string | undefined;
 };
 
@@ -16,9 +16,12 @@ const Checkbox = (props: inputProps) => {
 
   return (
     <div className="flex flex-col">
-      <label htmlFor={`${randomId}`}>
-        {capitalizeFirstLetter(props.name)}:
-      </label>
+      {props.name && (
+        <label htmlFor={`${randomId}`}>
+          {capitalizeFirstLetter(props.name)}:
+        </label>
+      )}
+
       <input
         id={`${randomId}`}
         type={"checkbox"}

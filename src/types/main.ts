@@ -39,3 +39,12 @@ export interface OrmHelper {
 
   createOne: (modelName: string, body: object) => Promise<any>;
 }
+
+// options that can be passed while creating instance of AdminPannel
+export interface AdminPannelOptions {
+  /* 
+  titleFields are set of fields for each model whose value will be shown in admin pannel
+  titleFields:{model1:["id","name"],model2:["field1","field2"]}
+   */
+  titleFields?: { [key: string]: string[] };
+}

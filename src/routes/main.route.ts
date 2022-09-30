@@ -1,4 +1,5 @@
 import { Router, Request, Response } from "express";
+import { request } from "http";
 import { SequelizeHelper } from "../orm/SequelizeHelper";
 import { Orm, OrmHelper } from "../types/main";
 
@@ -9,11 +10,15 @@ const ormHelpers: { [key in Orm]: OrmHelper } = {
   sequelize: new SequelizeHelper(),
 };
 
+apiRouter.get("/admin-pannel-options/", (req: Request, res: Response) => {
+  return res.json(AdminPannelOptions || {});
+});
+
 /* will return description of all model tables to frontend */
 apiRouter.get("/model-infos/", (req: Request, res: Response) => {
   const ormHelper = ormHelpers[appOrm];
   const modelInfos = ormHelper.extractModelInfo();
-  return res.send(modelInfos);
+  return res.json(modelInfos);
 });
 
 /* will return values that can be used as values for relation in model */
