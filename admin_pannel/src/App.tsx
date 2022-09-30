@@ -1,10 +1,14 @@
 import { Routes, Route } from "react-router-dom";
 import Dashboard from "./container/Dashboard";
 import SideBar from "./components/SideBar";
-import Body from "./components/Body";
-import Alert from "./container/alert";
+import Alert from "./container/Alert";
+import FormSection from "./components/FormSection";
+import { useActiveTableContext } from "./context/ActiveTableContext";
+import Header from "./container/Header";
+import Content from "./components/Content";
 
 function App() {
+  const { activeTable } = useActiveTableContext();
   const fetchUrl =
     window.location.protocol === "http:"
       ? "http://localhost:8000/admin/backend"
@@ -17,13 +21,22 @@ function App() {
       <Alert />
       <SideBar fetchUrl={fetchUrl} />
 
-      <Routes>
-        <Route path="/" element={<Dashboard />} />
-        <Route
-          path="/model/:modelName"
-          element={<Body fetchUrl={fetchUrl} />}
-        />
-      </Routes>
+      <div className="flex flex-1 flex-col">
+        <Header activeTable={activeTable} />
+
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/model/:modelName/">
+            <Route index element={<Content />} />
+            <Route
+              path="create"
+              element={
+                <FormSection activeTable={activeTable} fetchUrl={fetchUrl} />
+              }
+            />
+          </Route>
+        </Routes>
+      </div>
     </div>
   );
 }

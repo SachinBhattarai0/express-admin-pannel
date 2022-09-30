@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { TableInfo } from "../types/main";
 import Button from "./Form/Button";
 import { FromBuilder } from "../utils/FromBuilder";
@@ -11,6 +12,7 @@ type FormSelectionProps = {
 };
 
 const FormSection = ({ activeTable, fetchUrl }: FormSelectionProps) => {
+  const navigate = useNavigate();
   const formBuilder = new FromBuilder(fetchUrl);
   const { updateAlert } = useAlertContext();
   const [isFormPending, setIsFormPending] = useState(false);
@@ -59,9 +61,13 @@ const FormSection = ({ activeTable, fetchUrl }: FormSelectionProps) => {
 
     setIsFormPending(true);
     const data = await postRequest(url, { ...formDataObj });
-    if (data.error) updateAlert!(data.error);
-    else updateAlert!(data.message, "SUCCESS");
-    setIsFormPending(false);
+    if (data.error) {
+      updateAlert!(data.error);
+      setIsFormPending(false);
+    } else {
+      updateAlert!(data.message, "SUCCESS");
+      navigate(-1);
+    }
   };
 
   return (

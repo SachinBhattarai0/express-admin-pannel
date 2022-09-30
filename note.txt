@@ -1,0 +1,10 @@
+/* should be implemented by one using ligrary */
+// this.app.use(cors())
+// this.app.use(express.json())
+// app.use(express.urlencoded({ extended: true }))
+
+
+//after defining association the field must be specified in the model or else our library will have no way to know existance of that relation
+
+
+/* virtual field __title__ should be added in model for better readibility in admin pannel  */

@@ -1,5 +1,5 @@
 import React, { useState, useContext, createContext } from "react";
-import { AlertType } from "../container/alert";
+import { AlertType } from "../container/Alert";
 
 export type Alert = {
   message: string;
