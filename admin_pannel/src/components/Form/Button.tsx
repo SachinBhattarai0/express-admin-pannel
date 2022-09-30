@@ -32,7 +32,7 @@ const Button = ({
     <button
       type="submit"
       disabled={disabled}
-      className={`first-line:transition outline-none relative flex w-full justify-center rounded border border-transparent px-4 font-medium text-white focus:outline-none disabled:opacity-50 focus:ring-2 focus:ring-offset-2 ${
+      className={`first-line:transition outline-none relative flex w-full justify-center rounded border border-transparent px-4 font-medium text-white focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed focus:ring-2 focus:ring-offset-2 ${
         isPending && "pointer-events-none"
       } ${variants[variant]} ${sizes[size]}`}
     >

@@ -5,6 +5,7 @@ import Button from "./Form/Button";
 import { FromBuilder } from "../utils/FromBuilder";
 import { postRequest } from "../utils/fetches";
 import { useAlertContext } from "../context/AlertProvider";
+import Spinner from "../container/Spinner";
 
 type FormSelectionProps = {
   activeTable: TableInfo | null;
@@ -15,7 +16,10 @@ const FormSection = ({ activeTable, fetchUrl }: FormSelectionProps) => {
   const navigate = useNavigate();
   const formBuilder = new FromBuilder(fetchUrl);
   const { updateAlert } = useAlertContext();
+  //form submit pending
   const [isFormPending, setIsFormPending] = useState(false);
+  // fetching option inside useEffect pending
+  const [isFetchPending, setIsFetchPending] = useState(false);
   const [activeTableState, setActiveTableState] = useState<TableInfo | null>(
     activeTable
   );
@@ -25,15 +29,16 @@ const FormSection = ({ activeTable, fetchUrl }: FormSelectionProps) => {
 
     activeTable.fields.forEach(async (field, i) => {
       if (!field.relationWith) return;
+      setIsFetchPending(true);
       const modelName = field.relationWith.model;
       const option = await postRequest(`${fetchUrl}/model-values/${modelName}`);
 
       field.relationWith.options = option;
       activeTable.fields[i] = field;
+      setActiveTableState({ ...activeTable });
+      setIsFetchPending(false);
     });
-
-    setActiveTableState(activeTable);
-  }, [activeTable]);
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -75,6 +80,11 @@ const FormSection = ({ activeTable, fetchUrl }: FormSelectionProps) => {
       onSubmit={handleSubmit}
       className="bg-white m-4 p-3 md:p-6 rounded border border-gray-300 shadow-md space-y-1"
     >
+      {isFetchPending && (
+        <div className="mx-auto first:h-10 first:w-10">
+          <Spinner />
+        </div>
+      )}
       {formBuilder.generateField(activeTableState?.fields)}
 
       <Button isPending={isFormPending}>Submit</Button>

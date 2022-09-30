@@ -3,7 +3,7 @@ import React from "react";
 const ContentTablePaginatino = () => {
   return (
     <nav
-      className="flex justify-between items-center pt-4"
+      className="flex justify-between items-center bg-gray-50 p-4"
       aria-label="Table navigation"
     >
       <span className="text-sm font-normal text-gray-500 dark:text-gray-400">

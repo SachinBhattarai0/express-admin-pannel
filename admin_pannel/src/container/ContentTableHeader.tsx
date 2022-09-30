@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const ContentTableHeader = () => {
   return (
-    <div className="flex justify-between items-center pb-4 bg-gray-100 px-1 pt-1">
+    <div className="flex justify-between items-center bg-gray-50 px-3 pt-2 pb-0">
       <div className="relative mt-1">
         <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
           <svg
