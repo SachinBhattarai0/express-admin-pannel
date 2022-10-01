@@ -37,11 +37,20 @@ export interface OrmHelper {
   /* should return all datas in the given model */
   getAll: (modelName: string) => Promise<AnyObj>;
 
-  /*this method will get a fields which whose matching value in table should be deleted.
-  delets one or many values matching the given field values.
-  this methods returns Promist that resolve to finds a value matching the given primary keys and delete it*/
-  delete: (modelName: string, fields: AnyObj) => Promise<any>;
+  /*
+    this method should behave in two ways:
+    if whereFields if just one object.eg: whereFields={name:'sachin',age:12}
+      then should delete all items from model that has (name='sachin' and age='12')
 
+    if whereFields is array of objects.eg: whereFields=[{name:'sachin',age:12},{address:'damak'}]
+      then should loop over each object and delete all items from model where first (name='sachin' and age='12') and second item that have (address='damak')
+
+    NOTE: this method should always return as single promise using Promise.all()
+          for more info se delete method of SequelizeHelper
+    */
+  delete: (modelName: string, whereFields: AnyObj | AnyObj[]) => Promise<any>;
+
+  //
   createOne: (modelName: string, body: object) => Promise<any>;
 }
 

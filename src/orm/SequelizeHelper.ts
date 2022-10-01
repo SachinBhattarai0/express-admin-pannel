@@ -1,5 +1,5 @@
 import { AnyObj, ModelInfo, ModelInfos, OrmHelper } from "../types/main";
-import { DataType, DataTypes, Model, ModelStatic } from "sequelize";
+import { DataType, DataTypes, Model, ModelStatic, where } from "sequelize";
 
 declare module "sequelize" {
   export interface ModelAttributeColumnOptions {
@@ -34,10 +34,16 @@ export class SequelizeHelper implements OrmHelper {
     return model.create({ ...body });
   }
 
-  async delete(modelName: string, pkFields: AnyObj) {
+  async delete(modelName: string, whereFields: AnyObj | AnyObj[]) {
+    if (!Array.isArray(whereFields)) whereFields = [whereFields];
     const model = this.getModel(modelName);
     if (!model) throw new Error("invalid model name");
-    return model.destroy({ where: { ...pkFields } });
+
+    return Promise.all(
+      whereFields.map((whereField: AnyObj) =>
+        model.destroy({ where: { ...whereField } })
+      )
+    );
   }
 
   getModelFieldInfo(model: ModelStatic<Model>): ModelInfo[] {

@@ -1,4 +1,5 @@
 import React from "react";
+import { clip } from "../../utils/StringUtils";
 
 import { capitalizeFirstLetter, randomString } from "../../utils/StringUtils";
 
@@ -29,7 +30,7 @@ const Select = ({ defaultValue, name, options }: inputProps) => {
               key={i}
               defaultChecked={defaultValue === opt.value}
             >
-              {opt.name}
+              {clip(opt.name, 70)}
             </option>
           );
         })}
