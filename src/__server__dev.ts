@@ -155,6 +155,7 @@ const adminPannel = new AdminPannel("sequelize", sequelize, app, {
     Movie: ["__title__", "DirectorId"],
     ActorProfile: ["photo", "__title__"],
   },
+  imageFields: { ActorProfile: ["photo"] },
 });
 adminPannel.initialize("admin");
 

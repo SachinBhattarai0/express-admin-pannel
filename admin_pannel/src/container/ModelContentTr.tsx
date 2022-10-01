@@ -7,6 +7,7 @@ import { clip } from "../utils/StringUtils";
 
 type ModelContextTrProps = {
   activeModelExtraFields: string[];
+  activeModelImageFields: string[];
   modelValue: AnyObj;
   setModelValues: React.Dispatch<React.SetStateAction<AnyObj[]>>;
   modelName?: string;
@@ -15,6 +16,7 @@ type ModelContextTrProps = {
 
 const ModelContentTr = ({
   activeModelExtraFields,
+  activeModelImageFields,
   modelValue,
   setModelValues,
   modelName,
@@ -54,7 +56,7 @@ const ModelContentTr = ({
           let value = modelValue[fieldname];
           if (typeof value !== "string") value = `${value}`;
 
-          if (value.startsWith("http") && fieldname !== "__title__") {
+          if (activeModelImageFields?.includes(fieldname)) {
             return (
               <td className="py-1 px-4" key={i}>
                 <img

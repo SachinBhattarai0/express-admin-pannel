@@ -29,9 +29,14 @@ const Content = ({ activeTable }: ContentProps) => {
   }, [activeTable]);
 
   let activeModelExtraFields: string[];
+  let activeModelImageFields: string[];
   if (adminPannelOptions.titleFields) {
     activeModelExtraFields =
       adminPannelOptions.titleFields[activeTable?.tableName!];
+  }
+  if (adminPannelOptions.imageFields) {
+    activeModelImageFields =
+      adminPannelOptions.imageFields[activeTable?.tableName!];
   }
 
   return (
@@ -68,6 +73,7 @@ const Content = ({ activeTable }: ContentProps) => {
                 <ModelContentTr
                   key={i}
                   activeModelExtraFields={activeModelExtraFields}
+                  activeModelImageFields={activeModelImageFields}
                   modelValue={modelValue}
                   setModelValues={setModelValues}
                   modelName={activeTable?.tableName}

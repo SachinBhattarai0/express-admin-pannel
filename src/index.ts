@@ -1,6 +1,7 @@
 import { Db, ServerApp, Orm, AdminPannelOptions } from "./types/main";
 import apiRoutes from "./routes/main.route";
 import adminPannelroute from "./routes/adminpannel.route";
+import { AdminPannelOptionsValidator } from "./utils/AdminPannelOptionsValidator";
 import cors from "cors";
 import express from "express";
 import path from "path";
@@ -47,19 +48,17 @@ export class AdminPannel {
     this.app.use(`/${route}`, adminPannelroute);
   }
 
+  /* pretty complex method but all it does is it validates whether the options provided in AdminPannel options are valid or not */
   validateOptions(options: AdminPannelOptions) {
     if (options.titleFields) {
-      Object.entries(options.titleFields).map(([modelName, modelFields]) => {
-        if (!dbInstance.models[modelName])
-          throw new Error(`${modelName} does not exist!`);
-        const model = dbInstance.models[modelName].getAttributes();
-        if (!model)
-          throw new Error(`${modelName} in titleFields does not exist`);
-        modelFields.forEach((field) => {
-          if (!(field in model))
-            throw new Error(`${field} does not exis on model ${modelName}`);
-        });
-      });
+      AdminPannelOptionsValidator.validateModelToPropertyFields(
+        options.titleFields
+      );
+    }
+    if (options.imageFields) {
+      AdminPannelOptionsValidator.validateModelToPropertyFields(
+        options.imageFields
+      );
     }
   }
 }
