@@ -8,6 +8,7 @@ export type Orm = "sequelize"; /* or any other with union types */
 export interface ModelInfos {
   tableName: string;
   fields: ModelInfo[];
+  primaryKeyFields: Readonly<string[]>;
 }
 
 /* modelinfos which can be used by frontend to make form for the model */
@@ -24,6 +25,7 @@ export interface ModelInfo {
     | "oneToOne"
     | "oneToMany" /* relationType is not the actual relations between models */;
 }
+export type AnyObj = { [key: string]: any };
 
 /*
  Orm helpers are those class which contain orm specific methods to perform various 
@@ -33,9 +35,12 @@ export interface ModelInfo {
 export interface OrmHelper {
   extractModelInfo: () => ModelInfos[];
   /* should return all datas in the given model */
-  getAll: (modelName: string) => Promise<{
-    [key: string]: any;
-  }>;
+  getAll: (modelName: string) => Promise<AnyObj>;
+
+  /*this method will get a fields which whose matching value in table should be deleted.
+  delets one or many values matching the given field values.
+  this methods returns Promist that resolve to finds a value matching the given primary keys and delete it*/
+  delete: (modelName: string, fields: AnyObj) => Promise<any>;
 
   createOne: (modelName: string, body: object) => Promise<any>;
 }

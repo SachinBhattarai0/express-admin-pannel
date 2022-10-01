@@ -8,6 +8,26 @@
   box-sizing: border-box;
 }
 
+/* width */
+.custom-scroll::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+.custom-scroll::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+.custom-scroll::-webkit-scrollbar-thumb {
+  background: rgb(214, 214, 214);
+}
+
+/* Handle on hover */
+.custom-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgb(124, 123, 123);
+}
+
 .animate-custom {
   animation: scaling 200ms ease-out;
 }

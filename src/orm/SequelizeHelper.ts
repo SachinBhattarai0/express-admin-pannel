@@ -1,4 +1,4 @@
-import { ModelInfo, ModelInfos, OrmHelper } from "../types/main";
+import { AnyObj, ModelInfo, ModelInfos, OrmHelper } from "../types/main";
 import { DataType, DataTypes, Model, ModelStatic } from "sequelize";
 
 declare module "sequelize" {
@@ -16,6 +16,7 @@ export class SequelizeHelper implements OrmHelper {
         return {
           tableName: tableName,
           fields: this.getModelFieldInfo(model),
+          primaryKeyFields: model.primaryKeyAttributes,
         };
       }
     );
@@ -31,6 +32,12 @@ export class SequelizeHelper implements OrmHelper {
     const model = this.getModel(modelName);
     if (!model) throw new Error("invalid model name");
     return model.create({ ...body });
+  }
+
+  async delete(modelName: string, pkFields: AnyObj) {
+    const model = this.getModel(modelName);
+    if (!model) throw new Error("invalid model name");
+    return model.destroy({ where: { ...pkFields } });
   }
 
   getModelFieldInfo(model: ModelStatic<Model>): ModelInfo[] {

@@ -1,5 +1,5 @@
 import { Router, Request, Response } from "express";
-import { request } from "http";
+import { sendError } from "../utils";
 import { SequelizeHelper } from "../orm/SequelizeHelper";
 import { Orm, OrmHelper } from "../types/main";
 
@@ -30,13 +30,30 @@ apiRouter.post(
       const allOptions = await ormHelper.getAll(req.params.modelName);
       return res.json(allOptions);
     } catch (error) {
-      if (error instanceof Error) {
-        return res.status(400).json({ error: error.message });
-      }
-      return res.status(400).json({ error: "unknown error occured" });
+      return sendError(res, error as Error);
     }
   }
 );
+
+/* will delete all tabel values matching given values and returns new value */
+apiRouter.post("/delete/:modelName", async (req: Request, res: Response) => {
+  const ormHelper = ormHelpers[appOrm];
+  const modelName = req.params.modelName;
+  try {
+    const itemsCount = await ormHelper.delete(modelName, {
+      ...req.body.where,
+    });
+    const newValues = await ormHelper.getAll(modelName);
+    return res.json({
+      message: `Deleted ${itemsCount} item${
+        itemsCount > 1 ? "s" : ""
+      } Successfully!`,
+      newValues,
+    });
+  } catch (error) {
+    return sendError(res, error as Error);
+  }
+});
 
 apiRouter.post("/create/:modelName/", async (req: Request, res: Response) => {
   const { modelName } = req.params;
@@ -49,10 +66,7 @@ apiRouter.post("/create/:modelName/", async (req: Request, res: Response) => {
       response,
     });
   } catch (error) {
-    if (error instanceof Error) {
-      return res.status(400).json({ error: error.message });
-    }
-    return res.status(400).json({ error: "unknown error occured" });
+    return sendError(res, error as Error);
   }
 });
 

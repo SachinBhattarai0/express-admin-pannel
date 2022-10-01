@@ -5,7 +5,7 @@ import Alert from "./container/Alert";
 import FormSection from "./components/FormSection";
 import { useActiveTableContext } from "./context/ActiveTableContext";
 import Header from "./container/Header";
-import Content from "./components/ModelTableContent";
+import Content from "./components/ModelContentTable";
 
 declare global {
   interface Window {

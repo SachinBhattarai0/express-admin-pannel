@@ -1,6 +1,7 @@
 export type TableInfo = {
   tableName: string;
   fields: ModelInfo[];
+  primaryKeyFields?: string[];
 };
 
 export type TAbleContext = {
