@@ -69,6 +69,8 @@ const Content = ({ activeTable }: ContentProps) => {
                   key={i}
                   activeModelExtraFields={activeModelExtraFields}
                   modelValue={modelValue}
+                  setModelValues={setModelValues}
+                  modelName={activeTable?.tableName}
                   primaryKeyFields={activeTable?.primaryKeyFields}
                 />
               ))}

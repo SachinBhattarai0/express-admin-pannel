@@ -13,3 +13,10 @@ export function randomString(length?: number) {
 export function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
+
+export function clip(string: string, length: number = 20) {
+  if (string.length > length) {
+    return string.slice(0, length).concat("...");
+  }
+  return string;
+}

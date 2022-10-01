@@ -152,6 +152,8 @@ Actor.belongsToMany(Movie, { through: ActorMovies });
 const adminPannel = new AdminPannel("sequelize", sequelize, app, {
   titleFields: {
     Actor: ["id", "successor"],
+    Movie: ["__title__", "DirectorId"],
+    ActorProfile: ["photo", "__title__"],
   },
 });
 adminPannel.initialize("admin");

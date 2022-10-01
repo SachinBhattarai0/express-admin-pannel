@@ -50,6 +50,8 @@ export class AdminPannel {
   validateOptions(options: AdminPannelOptions) {
     if (options.titleFields) {
       Object.entries(options.titleFields).map(([modelName, modelFields]) => {
+        if (!dbInstance.models[modelName])
+          throw new Error(`${modelName} does not exist!`);
         const model = dbInstance.models[modelName].getAttributes();
         if (!model)
           throw new Error(`${modelName} in titleFields does not exist`);
