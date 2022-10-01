@@ -1,6 +1,4 @@
-import React from "react";
 import { clip } from "../../utils/StringUtils";
-
 import { capitalizeFirstLetter, randomString } from "../../utils/StringUtils";
 
 type inputProps = {
