@@ -80,7 +80,9 @@ const ModelContentTr = ({
       )}
 
       <td className="py-3 px-6 space-x-1 text-center">
-        <TextLink>Edit</TextLink>
+        <TextLink to="update" datas={modelValue}>
+          Edit
+        </TextLink>
         <TextLink variant="red" onClickFn={() => deleteOneHandler(primaryKey)}>
           Delete
         </TextLink>

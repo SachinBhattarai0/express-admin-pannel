@@ -24,3 +24,11 @@ after defining custom fields if user still want to show the title then it should
   /const adminPannel = new AdminPannel("sequelize", sequelize, app, {
 //  imageFields?: { [key: string]: string[] };
 //});
+
+
+
+ /* no of items to show per page. If no of item in page exceeds given value then pagination will be shown
+ defalult value is 30*/
+//const adminPannel = new AdminPannel("sequelize", sequelize, app, {
+  noOfItemsPerPage?: number;
+//});

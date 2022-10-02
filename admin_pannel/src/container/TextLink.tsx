@@ -11,6 +11,7 @@ type TextLinkProps = {
   children: React.ReactNode;
   variant?: keyof typeof variants;
   onClickFn?: () => any;
+  datas?: unknown;
 };
 
 export const TextLink = ({
@@ -18,10 +19,12 @@ export const TextLink = ({
   onClickFn,
   to = "#",
   variant = "blue",
+  datas,
 }: TextLinkProps) => {
   return (
     <Link
       to={to}
+      state={datas}
       onClick={onClickFn}
       className={`font-medium hover:underline ${variants[variant]}`}
     >

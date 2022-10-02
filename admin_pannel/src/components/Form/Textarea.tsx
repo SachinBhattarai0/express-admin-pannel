@@ -14,7 +14,7 @@ const Textarea = ({ defaultValue, name }: inputProps) => {
         rows={4}
         name={name}
         id={randomId}
-        value={defaultValue}
+        defaultValue={defaultValue}
         className="block p-2.5 w-full  bg-gray-50 rounded border-2 border-gray-300 focus:border-indigo-600 dark:text-white outline-none transition"
         placeholder={"Enter value for " + name}
       ></textarea>

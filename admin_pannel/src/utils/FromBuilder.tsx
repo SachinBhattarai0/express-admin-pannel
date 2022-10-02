@@ -14,7 +14,8 @@ const primitiveFieldTypes: PrimitiveFieldTypes = {
     <Input type="number" name={name} defaultValue={defaultValue} />
   ),
   date: (name, defaultValue) => (
-    <Input type="date" name={name} defaultValue={defaultValue} />
+    //slicing default value below so that it remains in format yyyy-mm-dd
+    <Input type="date" name={name} defaultValue={defaultValue?.slice(0, 10)} />
   ),
   text: (name, defaultValue) => (
     <Textarea name={name} defaultValue={defaultValue} />
@@ -29,6 +30,7 @@ export class FromBuilder {
   constructor(public optionsFetchUrl: string) {}
 
   generateField(fields: ModelInfo[] | undefined): React.ReactElement {
+    console.log("heneratinos");
     return (
       <>
         {fields?.map((fieldInfo, index) => {
@@ -56,7 +58,7 @@ export class FromBuilder {
 
   generateRelationField(fieldInfo: ModelInfo): React.ReactElement | undefined {
     if (!fieldInfo.relationWith?.options) return;
-    console.log(fieldInfo);
+    // console.log(fieldInfo);
     const options: relationModel[] = fieldInfo.relationWith!.options?.map(
       (item) => {
         const key = fieldInfo.relationWith!.key;
