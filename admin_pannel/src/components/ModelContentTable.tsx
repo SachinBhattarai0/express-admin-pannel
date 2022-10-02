@@ -4,7 +4,7 @@ import ContentTableHeader from "../container/ContentTableHeader";
 import { postRequest } from "../utils/fetches";
 import { TableInfo } from "../types/main";
 import { useAlertContext } from "../context/AlertProvider";
-import { AnyObj } from "../types/main";
+import { AnyObj, Paginator } from "../types/main";
 import ModelContentTr from "../container/ModelContentTr";
 import { useAdminPannelOptions } from "../context/AdminPannelOptionsContext";
 import Checkbox from "./Form/Checkbox";
@@ -13,20 +13,29 @@ type ContentProps = {
   activeTable: TableInfo | null;
 };
 
+type PaginatorState = { pager: Paginator | null; currentPage: number };
+
 const Content = ({ activeTable }: ContentProps) => {
   const adminPannelOptions = useAdminPannelOptions();
   const { updateAlert } = useAlertContext();
   const [modelValues, setModelValues] = useState<AnyObj[]>([]);
+  const [paginator, setPaginator] = useState<PaginatorState>({
+    pager: null,
+    currentPage: 1,
+  });
 
   useEffect(() => {
     if (!activeTable) return;
     postRequest(
-      `${window.fetchURL}/model-values/${activeTable?.tableName}`
+      `${window.fetchURL}/model-values/${activeTable?.tableName}?page=${paginator.currentPage}`,
+      { paginate: true }
     ).then((data) => {
       if (data.error) return updateAlert!("some error occured");
-      setModelValues([...data]);
+      console.log(data.options);
+      setModelValues([...data.options]);
+      setPaginator({ pager: data.pager, currentPage: paginator?.currentPage });
     });
-  }, [activeTable]);
+  }, [activeTable, paginator.currentPage]);
 
   let activeModelExtraFields: string[];
   let activeModelImageFields: string[];
@@ -84,7 +93,11 @@ const Content = ({ activeTable }: ContentProps) => {
           </table>
         </div>
 
-        <Pagination />
+        <Pagination
+          pager={paginator?.pager}
+          currentPage={paginator?.currentPage}
+          setPaginator={setPaginator}
+        />
       </div>
     </>
   );

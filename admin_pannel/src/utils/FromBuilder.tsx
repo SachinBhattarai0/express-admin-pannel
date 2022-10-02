@@ -56,7 +56,8 @@ export class FromBuilder {
 
   generateRelationField(fieldInfo: ModelInfo): React.ReactElement | undefined {
     if (!fieldInfo.relationWith?.options) return;
-    const options: relationModel[] = fieldInfo.relationWith!.options.map(
+    console.log(fieldInfo);
+    const options: relationModel[] = fieldInfo.relationWith!.options?.map(
       (item) => {
         const key = fieldInfo.relationWith!.key;
         return { name: item["__title__"] || item[key], value: item[key] };

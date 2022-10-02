@@ -156,6 +156,7 @@ const adminPannel = new AdminPannel("sequelize", sequelize, app, {
     ActorProfile: ["photo", "__title__"],
   },
   imageFields: { ActorProfile: ["photo"] },
+  noOfItemsPerPage: 6,
 });
 adminPannel.initialize("admin");
 

@@ -35,7 +35,7 @@ export type AnyObj = { [key: string]: any };
 export interface OrmHelper {
   extractModelInfo: () => ModelInfos[];
   /* should return all datas in the given model */
-  getAll: (modelName: string) => Promise<AnyObj>;
+  getAll: (modelName: string) => Promise<AnyObj[]>;
 
   /*
     this method should behave in two ways:
@@ -65,4 +65,7 @@ export interface AdminPannelOptions {
   /* if some field contain a url to a image and you want to show it as a image in admin pannel then
   declare the field in here eg: imageFields = {model1:['photo'],model2:['profileImg','siteImg']} */
   imageFields?: { [key: string]: string[] };
+
+  /* no of items to show per page. If no of item in page exceeds given value then pagination will be shown */
+  noOfItemsPerPage?: number;
 }

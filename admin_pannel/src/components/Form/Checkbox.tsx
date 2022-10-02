@@ -3,6 +3,7 @@ import { randomString, capitalizeFirstLetter } from "../../utils/StringUtils";
 type inputProps = {
   name?: string;
   checked?: boolean | string | undefined;
+  onChangeFn?: () => any;
 };
 
 const Checkbox = (props: inputProps) => {
@@ -27,6 +28,7 @@ const Checkbox = (props: inputProps) => {
         type={"checkbox"}
         name={props.name}
         defaultChecked={checked}
+        onChange={props.onChangeFn}
         className="p-2 rounded outline-none border-2 border-gray-300 transition focus:border-indigo-600"
         placeholder={`Enter the value for ${props.name}`}
       />

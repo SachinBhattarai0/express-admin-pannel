@@ -24,6 +24,7 @@
     "@types/sequelize": "^4.28.14",
     "cors": "^2.8.5",
     "express": "^4.18.1",
+    "jw-paginate": "^1.0.4",
     "pg": "^8.8.0",
     "sequelize": "^6.23.1"
   }

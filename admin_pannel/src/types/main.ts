@@ -51,3 +51,15 @@ export interface AdminPannelOptions {
   declare the field in here eg: imageFields = {model1:['photo'],model2:['profileImg','siteImg']} */
   imageFields?: { [key: string]: string[] };
 }
+
+export interface Paginator {
+  totalItems: number;
+  currentPage: number;
+  pageSize: number;
+  totalPages: number;
+  startPage: number;
+  endPage: number;
+  startIndex: number;
+  endIndex: number;
+  pages: number[];
+}

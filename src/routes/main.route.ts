@@ -1,8 +1,8 @@
 import { Router, Request, Response } from "express";
-import { sendError } from "../utils";
+import { sendError } from "../utils/response";
 import { SequelizeHelper } from "../orm/SequelizeHelper";
 import { Orm, OrmHelper } from "../types/main";
-
+import { paginator } from "../utils/paginator";
 const apiRouter = Router();
 
 /* should contain helpers for all supported orms */
@@ -28,6 +28,10 @@ apiRouter.post(
     const ormHelper = ormHelpers[appOrm];
     try {
       const allOptions = await ormHelper.getAll(req.params.modelName);
+
+      if (req.body.paginate) {
+        return res.json(paginator(allOptions, req.query.page as string));
+      }
       return res.json(allOptions);
     } catch (error) {
       return sendError(res, error as Error);

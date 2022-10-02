@@ -1,5 +1,5 @@
 import { AnyObj, ModelInfo, ModelInfos, OrmHelper } from "../types/main";
-import { DataType, DataTypes, Model, ModelStatic, where } from "sequelize";
+import { DataType, DataTypes, Model, ModelStatic } from "sequelize";
 
 declare module "sequelize" {
   export interface ModelAttributeColumnOptions {
@@ -22,7 +22,7 @@ export class SequelizeHelper implements OrmHelper {
     );
   }
 
-  async getAll(modelName: string): Promise<{ [key: string]: any }> {
+  async getAll(modelName: string): Promise<AnyObj[]> {
     const model = this.getModel(modelName);
     if (!model) throw new Error("invalid model name");
     return model.findAll();
