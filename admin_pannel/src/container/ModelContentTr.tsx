@@ -4,7 +4,7 @@ import { AnyObj } from "../types/main";
 import { postRequest } from "../utils/fetches";
 import { useAlertContext } from "../context/AlertProvider";
 import { clip } from "../utils/StringUtils";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 type ModelContextTrProps = {
   activeModelExtraFields: string[];
@@ -24,11 +24,12 @@ const ModelContentTr = ({
   primaryKeyFields,
 }: ModelContextTrProps) => {
   const { updateAlert } = useAlertContext();
+  const [modelValueState, setModelValueState] = useState(modelValue);
 
   /* if there are multple primary key then returns stringified form of object ontaining key as pk identifier and value as value of pk */
   const primaryKey = primaryKeyFields!.reduce((pv, cv) => {
     let nv = JSON.parse(pv) as { [key: string]: string };
-    nv[cv] = modelValue[cv];
+    nv[cv] = modelValueState[cv];
     return JSON.stringify(nv);
   }, "{}");
 
@@ -54,7 +55,7 @@ const ModelContentTr = ({
 
       {activeModelExtraFields ? (
         activeModelExtraFields.map((fieldname, i) => {
-          let value = modelValue[fieldname];
+          let value = modelValueState[fieldname];
           if (typeof value !== "string") value = `${value}`;
 
           if (activeModelImageFields?.includes(fieldname)) {
@@ -76,11 +77,11 @@ const ModelContentTr = ({
           }
         })
       ) : (
-        <td className="py-3 px-6">{clip(modelValue.__title__)}</td>
+        <td className="py-3 px-6">{clip(modelValueState.__title__)}</td>
       )}
 
       <td className="py-3 px-6 space-x-1 text-center">
-        <TextLink to="update" datas={modelValue}>
+        <TextLink to="update" datas={modelValueState}>
           Edit
         </TextLink>
         <TextLink variant="red" onClickFn={() => deleteOneHandler(primaryKey)}>

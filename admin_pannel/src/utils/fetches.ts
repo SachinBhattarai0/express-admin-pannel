@@ -6,7 +6,8 @@ export async function postRequest(url: string, value: object = {}) {
       body: JSON.stringify(value),
     });
 
-    return await jsonRes.json();
+    const response = await jsonRes.json();
+    return response;
   } catch (error) {
     return { error: true, message: error };
   }

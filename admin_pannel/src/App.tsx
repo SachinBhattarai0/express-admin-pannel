@@ -2,10 +2,11 @@ import { Routes, Route } from "react-router-dom";
 import Dashboard from "./container/Dashboard";
 import SideBar from "./components/SideBar";
 import Alert from "./container/Alert";
-import FormSection from "./components/FormSection";
+import FormSection from "./components/AddFormSection";
 import { useActiveTableContext } from "./context/ActiveTableContext";
 import Header from "./container/Header";
 import Content from "./components/ModelContentTable";
+import UpdateFormSection from "./components/UpdateFormSection";
 
 declare global {
   interface Window {
@@ -41,10 +42,10 @@ function App() {
               path="create"
               element={<FormSection activeTable={activeTable} />}
             />
-            {/* <Route
+            <Route
               path="update/"
-              element={<EditFormSection activeTable={activeTable} />}
-            /> */}
+              element={<UpdateFormSection activeTable={activeTable} />}
+            />
           </Route>
         </Routes>
       </div>
