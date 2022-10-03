@@ -1,31 +1,42 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { TableInfo } from "../types/main";
+import { useLocation } from "react-router-dom";
+import { FromBuilder } from "../utils/FromBuilder";
 import Button from "./Form/Button";
 import { postRequest } from "../utils/fetches";
-import { useAlertContext } from "../context/AlertProvider";
+import { useNavigate } from "react-router-dom";
 import Spinner from "../container/Spinner";
-import FormBuilder from "./FormBuilders/FormBuilder";
+import { useAlertContext } from "../context/AlertProvider";
 
-type FormSelectionProps = {
+type ContentProps = {
   activeTable: TableInfo | null;
 };
 
-const FormSection = ({ activeTable }: FormSelectionProps) => {
-  const navigate = useNavigate();
+const EditFormSection = ({ activeTable }: ContentProps) => {
+  const { state: modelValue } = useLocation();
   const { updateAlert } = useAlertContext();
-  //form submit pending
-  const [isFormPending, setIsFormPending] = useState(false);
-  // fetching option inside useEffect pending
   const [isFetchPending, setIsFetchPending] = useState(false);
+  const formBuilder = new FromBuilder(window.fetchURL);
+  const [isFormPending, setIsFormPending] = useState(false);
   const [activeTableState, setActiveTableState] = useState<TableInfo | null>(
     activeTable
   );
+  const navigate = useNavigate();
+
+  /* this is a change identifier which will rerun the useEffect at bottom */
+  const [changeId, setChangeId] = useState(Math.random());
+
+  /* if there are multple primary key then returns stringified form of object ontaining key as pk identifier and value as value of pk */
+  const primaryKey = activeTable?.primaryKeyFields!.reduce((pv, cv) => {
+    let nv = JSON.parse(pv) as { [key: string]: string };
+    nv[cv] = modelValue[cv];
+    return JSON.stringify(nv);
+  }, "{}");
 
   useEffect(() => {
     if (!activeTable?.tableName) return;
-
     activeTable.fields.forEach(async (field, i) => {
+      setChangeId(Math.random());
       if (!field.relationWith) return;
       setIsFetchPending(true);
       const modelName = field.relationWith.model;
@@ -40,6 +51,15 @@ const FormSection = ({ activeTable }: FormSelectionProps) => {
     });
   }, []);
 
+  useEffect(() => {
+    const newActiveTableState = activeTableState;
+    activeTableState?.fields.map((field, i) => {
+      const fieldValue = newActiveTableState?.fields[i];
+      fieldValue!.defaultValue = modelValue[field.fieldName];
+    });
+    setActiveTableState(newActiveTableState);
+  }, [activeTable]);
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!activeTableState) return;
@@ -53,6 +73,7 @@ const FormSection = ({ activeTable }: FormSelectionProps) => {
 
     for (let i = 0; i < activeTableState.fields.length; i++) {
       const field = activeTableState.fields[i];
+
       /*
       by defautt if value of checkbox is unchecked then new FormData ignores key&value of checkbox.
       this can create problem sometimes so below configuration will check whether formData is missing any
@@ -68,10 +89,13 @@ const FormSection = ({ activeTable }: FormSelectionProps) => {
       }
     }
 
-    const url = `${window.fetchURL}/create/${activeTableState?.tableName}/`;
+    const url = `${window.fetchURL}/update/${activeTableState?.tableName}/`;
 
     setIsFormPending(true);
-    const data = await postRequest(url, { ...formDataObj });
+    const data = await postRequest(url, {
+      newValues: formDataObj,
+      pk: JSON.parse(primaryKey!),
+    });
     if (data.error) {
       updateAlert!(data.error);
       setIsFormPending(false);
@@ -86,8 +110,7 @@ const FormSection = ({ activeTable }: FormSelectionProps) => {
       onSubmit={handleSubmit}
       className="bg-white m-4 p-3 md:p-6 rounded border border-gray-300 shadow-md space-y-1"
     >
-      <FormBuilder fields={activeTableState?.fields} />
-
+      {formBuilder.generateField(activeTableState?.fields)}
       {isFetchPending && (
         <div className="mx-auto first:h-10 first:w-10">
           <Spinner />
@@ -99,4 +122,4 @@ const FormSection = ({ activeTable }: FormSelectionProps) => {
   );
 };
 
-export default FormSection;
+export default EditFormSection;
