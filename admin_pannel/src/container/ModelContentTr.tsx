@@ -24,12 +24,11 @@ const ModelContentTr = ({
   primaryKeyFields,
 }: ModelContextTrProps) => {
   const { updateAlert } = useAlertContext();
-  const [modelValueState, setModelValueState] = useState(modelValue);
 
   /* if there are multple primary key then returns stringified form of object ontaining key as pk identifier and value as value of pk */
   const primaryKey = primaryKeyFields!.reduce((pv, cv) => {
     let nv = JSON.parse(pv) as { [key: string]: string };
-    nv[cv] = modelValueState[cv];
+    nv[cv] = modelValue[cv];
     return JSON.stringify(nv);
   }, "{}");
 
@@ -55,7 +54,7 @@ const ModelContentTr = ({
 
       {activeModelExtraFields ? (
         activeModelExtraFields.map((fieldname, i) => {
-          let value = modelValueState[fieldname];
+          let value = modelValue[fieldname];
           if (typeof value !== "string") value = `${value}`;
 
           if (activeModelImageFields?.includes(fieldname)) {
@@ -77,11 +76,11 @@ const ModelContentTr = ({
           }
         })
       ) : (
-        <td className="py-3 px-6">{clip(modelValueState.__title__)}</td>
+        <td className="py-3 px-6">{clip(modelValue.__title__)}</td>
       )}
 
       <td className="py-3 px-6 space-x-1 text-center">
-        <TextLink to="update" datas={modelValueState}>
+        <TextLink to="update" datas={modelValue}>
           Edit
         </TextLink>
         <TextLink variant="red" onClickFn={() => deleteOneHandler(primaryKey)}>

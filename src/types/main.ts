@@ -52,6 +52,9 @@ export interface OrmHelper {
 
   //
   createOne: (modelName: string, body: object) => Promise<any>;
+
+  //updates one item that matches given pk
+  updateOne: (modelName: string, pk: object, newValues: AnyObj) => Promise<any>;
 }
 
 // options that can be passed while creating instance of AdminPannel

@@ -46,6 +46,20 @@ export class SequelizeHelper implements OrmHelper {
     );
   }
 
+  async updateOne(modelName: string, pk: object, newValues: AnyObj) {
+    const model = this.getModel(modelName);
+    if (!model) throw new Error("invalid model name");
+
+    const item = await model.findOne({ where: { ...pk } });
+    console.log(pk);
+    if (!item) throw new Error("no item matched given pk!!");
+
+    Object.entries(newValues).forEach(([key, value]) =>
+      item.setDataValue(key, value)
+    );
+    return item.save();
+  }
+
   getModelFieldInfo(model: ModelStatic<Model>): ModelInfo[] {
     const modelAttributes = model.getAttributes();
     return Object.entries(modelAttributes)

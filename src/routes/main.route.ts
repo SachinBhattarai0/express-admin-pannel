@@ -62,11 +62,26 @@ apiRouter.post("/delete/:modelName", async (req: Request, res: Response) => {
 apiRouter.post("/create/:modelName/", async (req: Request, res: Response) => {
   const { modelName } = req.params;
   const ormHelper = ormHelpers[appOrm];
-  console.log(req.body);
   try {
     const response = await ormHelper.createOne(modelName, { ...req.body });
     return res.json({
       message: `${modelName} created successfully!`,
+      response,
+    });
+  } catch (error) {
+    return sendError(res, error as Error);
+  }
+});
+
+apiRouter.post("/update/:modelName/", async (req: Request, res: Response) => {
+  const { modelName } = req.params;
+  const { pk, newValues } = req.body;
+  const ormHelper = ormHelpers[appOrm];
+
+  try {
+    const response = await ormHelper.updateOne(modelName, pk, newValues);
+    return res.json({
+      message: `${modelName} updated successfully!`,
       response,
     });
   } catch (error) {
