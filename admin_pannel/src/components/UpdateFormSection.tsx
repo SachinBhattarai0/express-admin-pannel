@@ -95,10 +95,7 @@ const UpdateFormSection = ({ activeTable }: UpdateFormSectionProps) => {
 
     const url = `${window.fetchURL}/update/${activeTableState?.tableName}/`;
     setIsFormPending(true);
-    console.log({
-      newValues: formDataObj,
-      pk: JSON.parse(primaryKey!),
-    });
+
     const data = await postRequest(url, {
       newValues: formDataObj,
       pk: JSON.parse(primaryKey!),

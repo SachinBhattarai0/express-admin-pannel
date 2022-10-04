@@ -89,4 +89,20 @@ apiRouter.post("/update/:modelName/", async (req: Request, res: Response) => {
   }
 });
 
+apiRouter.post("/filter/:modelName/", async (req: Request, res: Response) => {
+  const { modelName } = req.params;
+  const { key, value } = req.body;
+  const ormHelper = ormHelpers[appOrm];
+
+  try {
+    const response = await ormHelper.filter(modelName, key, value);
+    return res.json({
+      message: `${modelName} queried successfully!`,
+      response,
+    });
+  } catch (error) {
+    return sendError(res, error as Error);
+  }
+});
+
 export default apiRouter;

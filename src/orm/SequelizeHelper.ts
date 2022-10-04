@@ -1,5 +1,5 @@
 import { AnyObj, ModelInfo, ModelInfos, OrmHelper } from "../types/main";
-import { DataType, DataTypes, Model, ModelStatic } from "sequelize";
+import { DataType, DataTypes, Model, ModelStatic, Op } from "sequelize";
 
 declare module "sequelize" {
   export interface ModelAttributeColumnOptions {
@@ -51,13 +51,19 @@ export class SequelizeHelper implements OrmHelper {
     if (!model) throw new Error("invalid model name");
 
     const item = await model.findOne({ where: { ...pk } });
-    console.log(pk);
     if (!item) throw new Error("no item matched given pk!!");
 
     Object.entries(newValues).forEach(([key, value]) =>
       item.setDataValue(key, value)
     );
     return item.save();
+  }
+
+  async filter(modelName: string, key: string, value: string) {
+    const model = this.getModel(modelName);
+    if (!model) throw new Error("invalid model name");
+
+    return model.findAll({ where: { [key]: { [Op.iLike]: `%${value}%` } } });
   }
 
   getModelFieldInfo(model: ModelStatic<Model>): ModelInfo[] {

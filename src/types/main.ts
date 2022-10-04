@@ -55,6 +55,9 @@ export interface OrmHelper {
 
   //updates one item that matches given pk
   updateOne: (modelName: string, pk: object, newValues: AnyObj) => Promise<any>;
+
+  //finds in given modelName for item that matches given key and its value
+  filter: (modelName: string, key: string, value: string) => Promise<any>;
 }
 
 // options that can be passed while creating instance of AdminPannel
