@@ -3,10 +3,17 @@
 
 ## USAGE
 
+### Installation
+```
+   npm i express-admin-pannel
+```
+
 #### These must be implement to use the library.
 ```
-   const express = require('express')/* install using npm install express */
-   const cors = require('cors')/* install using npm install cors */
+   const express = require('express')
+   const cors = require('cors')
+   const {AdminPannel} = require("express-admin-pannel")
+   
    
    const app = express()
 
@@ -27,7 +34,7 @@
 
 ### Creating a dummy models 
 ```
-  const ActorProfle = sequelize.define("ActorProfile", {
+  const ActorProfile = sequelize.define("ActorProfile", {
       photo: {type:DataTypes.STRING},
       description: DataTypes.TEXT,
   },
@@ -54,7 +61,7 @@
 
 ### Initializing admin pannel
 ```
-  const AdminPannel = require("**somepath**")
+  const {AdminPannel} = require("express-admin-pannel")
   
   const adminPannel = new AdminPannel("sequelize", sequelize, app}
   adminPannel.initialize("admin");//The argument is the route to adminpannel
@@ -79,6 +86,77 @@
  now visit http://localhost:8000/admin to see the admin pannel.
 
 
+
+### Customization
+Admin Pannel can be customized by passing options while instantiating admin pannel
+
+```
+    const adminPannel = new AdminPannel("sequelize", sequelize, app,{
+       titleFields: /* fields mentioned here will be shown in admin pannel */,
+       imageFields: /* fields mentioned here should be a link and it will be shown as image in admin pannel */,
+       noOfItemsPerPage: /* shows this mentioned of items before showing pagination default is 30 */;
+     }}
+```
+
+Lets look at them individually:
+
+#### titleFields
+```
+     const adminPannel = new AdminPannel("sequelize", sequelize, app,{
+       titleFields: { Actor: ["id", "name","ActorProfileId"], ActorProfile: ["photo","description"] },
+                     /* {model1:["field1","field2"],model2:["field1","field2"]} */
+     }}
+```
+ this will show id,name,ActorProfileId in admin pannel.
+ 
+ optionally if you add a ```__title__``` virtual field and return something then it will be shown in the admin pannel automatically if you have not customized title fields
+ For Example: if we change our Actor model as below and add a virtual field called ```__title__``` 
+ ```
+ 
+   const Actor = sequelize.define("Actor", {
+      name: { type: DataTypes.STRING, allowNull: false },
+      
+       ActorProfileId: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: ActorProfile, // 'ActorProfiles' would also work
+          key: "id",
+      },
+      __title__: {
+       type: DataTypes.VIRTUAL,
+       get() {
+         return `${this.getDataValue("name")}`;
+       },
+      },
+    },
+  });
+
+ ```
+ whatever you return from the ```__title__``` virtual field will be automatically shown in admin pannel unless you have customized the titleFields
+ if you still want to show ```__title__``` then you have to mention in the titleFields.
+    
+ 
+#### imageFields
+If you have a link to a image and you want to see it as a image then you can also do that.
+In our case we have a field called ```photo``` in ActorProfile so we will show it as image in admin pannel
+ ```
+    const adminPannel = new AdminPannel("sequelize", sequelize, app,{
+       titleFields: { ActorProfile: ["photo"] },//First we mention that we want to show photo in admin pannel
+       imageFields: {ActorProfile:["photo"]} // Then we mention it in the image field
+     }}
+ ```
+
+ 
+#### noOfItemsPerPage
+If you want to show a specific number of items before showing pagination then specify ```noOfItemsPerPage``` property:
+
+ ```
+    const adminPannel = new AdminPannel("sequelize", sequelize, app,{
+       noOfItemsPerPage:10,
+     }}
+ ```
+ this will show 10 items before showing pagination.
+ 
  
 
  
