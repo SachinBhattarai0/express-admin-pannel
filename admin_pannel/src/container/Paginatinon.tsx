@@ -1,7 +1,5 @@
 import React from "react";
-import { Paginator } from "../types/main";
-
-type PaginatorState = { pager: Paginator | null; currentPage: number };
+import { Paginator, PaginatorState } from "../types/main";
 
 const ContentTablePaginatino = ({
   pager,
@@ -61,12 +59,15 @@ const ContentTablePaginatino = ({
             </li>
 
             {pager.pages.map((page, i) => {
-              if (page > currentPage + 5 || page < currentPage) return;
+              // if (page > currentPage + 5 || page < currentPage) return;
               return (
                 <li key={i}>
                   <div
                     onClick={() =>
-                      setPaginator!({ pager: pager, currentPage: page })
+                      setPaginator!({
+                        pager: pager,
+                        currentPage: page,
+                      })
                     }
                     className={`py-2 px-3 leading-tight border hover:text-gray-700 ${
                       currentPage === page

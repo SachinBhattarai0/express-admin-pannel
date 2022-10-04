@@ -63,3 +63,9 @@ export interface Paginator {
   endIndex: number;
   pages: number[];
 }
+
+export type PaginatorState = {
+  pager: Paginator | null;
+  currentPage: number;
+  cb?: string;
+};

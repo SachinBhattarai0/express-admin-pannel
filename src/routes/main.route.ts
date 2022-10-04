@@ -95,11 +95,11 @@ apiRouter.post("/filter/:modelName/", async (req: Request, res: Response) => {
   const ormHelper = ormHelpers[appOrm];
 
   try {
-    const response = await ormHelper.filter(modelName, key, value);
-    return res.json({
-      message: `${modelName} queried successfully!`,
-      response,
-    });
+    const allOptions = await ormHelper.filter(modelName, key, value);
+    if (req.body.paginate) {
+      return res.json(paginator(allOptions, req.query.page as string));
+    }
+    return res.json(allOptions);
   } catch (error) {
     return sendError(res, error as Error);
   }

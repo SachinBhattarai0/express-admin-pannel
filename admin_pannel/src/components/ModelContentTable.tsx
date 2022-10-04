@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import Pagination from "../container/Paginatinon";
-import ContentTableHeader from "../container/ContentTableHeader";
+import ContentTableHeader from "./ContentTableHeader";
 import { postRequest } from "../utils/fetches";
-import { TableInfo } from "../types/main";
+import { PaginatorState, TableInfo } from "../types/main";
 import { useAlertContext } from "../context/AlertProvider";
-import { AnyObj, Paginator } from "../types/main";
+import { AnyObj } from "../types/main";
 import ModelContentTr from "../container/ModelContentTr";
 import { useAdminPannelOptions } from "../context/AdminPannelOptionsContext";
 import Checkbox from "./Form/Checkbox";
@@ -13,27 +13,29 @@ type ContentProps = {
   activeTable: TableInfo | null;
 };
 
-type PaginatorState = { pager: Paginator | null; currentPage: number };
-
 const Content = ({ activeTable }: ContentProps) => {
   const adminPannelOptions = useAdminPannelOptions();
   const { updateAlert } = useAlertContext();
   const [modelValues, setModelValues] = useState<AnyObj[]>([]);
+  const [filtered, setFiltered] = useState(false);
   const [paginator, setPaginator] = useState<PaginatorState>({
     pager: null,
     currentPage: 1,
   });
 
   useEffect(() => {
-    if (!activeTable) return;
+    if (filtered || !activeTable) return;
     postRequest(
       `${window.fetchURL}/model-values/${activeTable?.tableName}?page=${paginator.currentPage}`,
       { paginate: true }
     ).then((data) => {
+      console.log(data);
       if (data.error) return updateAlert!("some error occured");
-      console.log(data.options);
       setModelValues([...data.options]);
-      setPaginator({ pager: data.pager, currentPage: paginator?.currentPage });
+      setPaginator({
+        pager: data.pager,
+        currentPage: paginator?.currentPage,
+      });
     });
   }, [activeTable, paginator.currentPage]);
 
@@ -51,7 +53,17 @@ const Content = ({ activeTable }: ContentProps) => {
   return (
     <>
       <div className="relative overflow-hidden shadow-md sm:rounded m-4 border border-gray-300">
-        <ContentTableHeader />
+        {activeTable?.fields && (
+          <ContentTableHeader
+            setModelValues={setModelValues}
+            modelName={activeTable?.tableName}
+            paginator={paginator}
+            setPaginator={setPaginator}
+            filtered={filtered}
+            setFiltered={setFiltered}
+            fields={activeTable.fields}
+          />
+        )}
 
         <div className="overflow-y-scroll max-h-[60vh] custom-scroll">
           <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
