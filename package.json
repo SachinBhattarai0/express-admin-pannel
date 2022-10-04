@@ -1,15 +1,23 @@
 {
   "name": "express-admin-pannel",
   "version": "1.0.0",
-  "description": "",
+  "description": "Admin pannel for express app",
   "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SachinBhattarai0/express-admin-pannel.git"
+  },
   "scripts": {
     "start:build": "tsc -w",
     "start:run": "nodemon build/__server__dev.js",
     "start": "concurrently npm:start:*"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "express",
+    "express-admin-pannel",
+    "admin pannel"
+  ],
+  "author": "Sachin Bhattarai",
   "license": "ISC",
   "devDependencies": {
     "concurrently": "^7.4.0",
